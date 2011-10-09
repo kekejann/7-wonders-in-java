@@ -1,129 +1,141 @@
 package org.tjuscs.sevenwonders.core;
-import java.util.*;
 
+import java.util.*;
 
 /**
  * The Class CardManager.
  */
 public class CardManager {
-	
+
 	/** The deck. */
 	List<Card> deck;
-	
+
 	/** The guild deck. */
 	List<Card> guildDeck;
-	
+
 	/** The discard. */
 	LinkedList<Card> discard;
-	
+
 	/** The hand. */
 	Hand hand;
-	
-	/** The num players. */
+
+	/** The number of players. */
 	int numPlayers;
 
 	/**
 	 * Instantiates a new card manager.
 	 */
-	public CardManager(){
+	public CardManager() {
 		this(7);
 	}
-	
+
 	/**
-	 * Instantiates a new card manager.
+	 * Instantiates a new card manager.<br>
+	 * CardManager构造函数
 	 * 
 	 * @param playerNum
-	 *            the player num
+	 *            the player number.玩家人數
 	 */
-	public CardManager(int playerNum){
+	public CardManager(int playerNum) {
 		deck = new ArrayList<Card>(140);
 		guildDeck = new ArrayList<Card>(10);
 		discard = new LinkedList<Card>();
-		hand = new Hand();
+		hand = new Hand();						//Q: Is this used?
 		buildGuildDeck();
 		buildDeck();
 		numPlayers = playerNum;
 	}
 
 	/**
-	 * Setup hands.
+	 * Setup hands.<br>
+	 * 设置手牌。
+	 * <p>
+	 * Get cards we need from the all-no-guild deck according to the age and the
+	 * number of players. If it's the 3rd age, also randomly get proper number
+	 * of guild cards from the guild deck. At last, shuffle the cards we get,
+	 * separate them into different Hands, and return the hands<br>
+	 * 根据所处时代和玩家数量从所有非协会牌中取出需要的牌。如果是第三时代，还要随机地从协会牌中取出合适数量的牌。 最后洗牌并分发到不同手牌堆中。
 	 * 
 	 * @param age
-	 *            the age
-	 * @return the hand[]
+	 *            the age number
+	 * @return the hand[]<br>
+	 *         設置好的手牌
 	 */
-	public Hand[] setupHands(int age){
+	public Hand[] setupHands(int age) {
 		ArrayList<Card> ageDeck = new ArrayList<Card>(7 * numPlayers);
-		
-		for(Card c : deck){
-			if(c.getAge() == age && c.getplayerNumber() <= numPlayers)
+
+		for (Card c : deck) {
+			if (c.getAge() == age && c.getplayerNumber() <= numPlayers)
 				ageDeck.add(c);
 		}
-		
-		if(age == 3){
+
+		if (age == 3) {
 			shuffle(guildDeck);
-			for(int i = 0; i < numPlayers + 2; i++){
+			for (int i = 0; i < numPlayers + 2; i++) {
 				ageDeck.add(guildDeck.get(i));
 			}
 		}
-		
-		System.out.println(String.format("Age %d has %d cards", age, ageDeck.size() ));
-		
+
+		System.out.println(String.format("Age %d has %d cards", age,
+				ageDeck.size()));
+
 		shuffle(ageDeck);
 		Hand[] hands = new Hand[numPlayers];
 		int cardCount = 0;
-		for(int plNm = 0; plNm < numPlayers; plNm++){
+		for (int plNm = 0; plNm < numPlayers; plNm++) {
 			hands[plNm] = new Hand();
-			for(int c = 0; c < 7; c++){
-				hands[plNm].add( ageDeck.get(cardCount++) );				
+			for (int c = 0; c < 7; c++) {
+				hands[plNm].add(ageDeck.get(cardCount++));
 			}
 		}
-			
+
 		return hands;
 	}
-	
+
 	/**
 	 * Gets the discarded cards.
 	 * 
 	 * @return the discarded cards
 	 */
-	public Card[] getDiscardedCards(){
+	public Card[] getDiscardedCards() {
 		return discard.toArray(null);
 	}
-	
+
 	/**
 	 * Discard card.
 	 * 
 	 * @param card
 	 *            the card
 	 */
-	public void discardCard(Card card){
-		discard.add(card);		
+	public void discardCard(Card card) {
+		discard.add(card);
 	}
-	
+
 	/**
-	 * Removes the from discard.
+	 * Removes a card from the discarded deck.<br>
+	 * 从弃牌堆去除一张牌
 	 * 
 	 * @param card
-	 *            the card
+	 *            the card.卡牌
 	 */
-	public void removeFromDiscard(Card card){
+	public void removeFromDiscard(Card card) {
 		discard.remove(card);
 	}
-	
+
 	/**
-	 * Shuffle.
+	 * Shuffle<br>
+	 * 洗牌
 	 * 
 	 * @param deck
-	 *            the deck
+	 *            the deck.牌堆
 	 */
-	private void shuffle(List<Card> deck){
+	private void shuffle(List<Card> deck) {
 		int deckSize = deck.size();
 		Card temp;
 		int rndLoc;
 		Random rndGen = new Random(System.currentTimeMillis());
-		for(int iteration = 0; iteration < 2; iteration++){
-			for(int i = 0; i < deckSize; i++){
+		for (int iteration = 0; iteration < 2; iteration++) {
+			for (int i = 0; i < deckSize; i++) {
 				rndLoc = rndGen.nextInt(deckSize);
 				temp = deck.get(i);
 				deck.set(i, deck.get(rndLoc));
@@ -132,101 +144,104 @@ public class CardManager {
 		}
 	}
 
-	
 	/**
-	 * Builds the guild deck.
+	 * Builds the guild deck.<br>
+	 * 建立协会牌（紫色牌）<br>
+	 * Needs to be a separate deck because only some of them are used each game.<br>
+	 * 需要建立一个独立的牌堆，因为其中只有部分牌会在游戏中使用。
 	 */
-	void buildGuildDeck() {  // needs to be a separate deck because only some of them are used each game.
-	 	
-		//  Age III Purple Cards  
+	void buildGuildDeck() {
+
+		// Age III Purple Cards
 		Card crd;
-		
+
 		crd = new Card("Workers Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.ORE, 2);
 		crd.addCost(Resource.BRICK, 1);
 		crd.addCost(Resource.STONE, 1);
 		crd.addCost(Resource.WOOD, 1);
-		crd.setAction(new ColorBasedVpAction(CardColor.BROWN, 1) );
+		crd.setAction(new ColorBasedVpAction(CardColor.BROWN, 1));
 		guildDeck.add(crd);
 
 		crd = new Card("Craftsmens Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.ORE, 2);
 		crd.addCost(Resource.STONE, 2);
-		crd.setAction(new ColorBasedVpAction(CardColor.GREY, 2) );
+		crd.setAction(new ColorBasedVpAction(CardColor.GREY, 2));
 		guildDeck.add(crd);
-	
+
 		crd = new Card("Traders Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.CLOTH, 1);
 		crd.addCost(Resource.PAPYRUS, 1);
 		crd.addCost(Resource.GLASS, 1);
-		crd.setAction(new ColorBasedVpAction(CardColor.YELLOW, 1) );
+		crd.setAction(new ColorBasedVpAction(CardColor.YELLOW, 1));
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Philosophers Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.BRICK, 3);
 		crd.addCost(Resource.CLOTH, 1);
 		crd.addCost(Resource.PAPYRUS, 1);
-		crd.setAction(new ColorBasedVpAction(CardColor.GREEN, 1) );
+		crd.setAction(new ColorBasedVpAction(CardColor.GREEN, 1));
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Spies Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.BRICK, 3);
 		crd.addCost(Resource.GLASS, 1);
 		crd.addCost(Resource.WOOD, 1);
-		crd.setAction(new ColorBasedVpAction(CardColor.RED, 1) );
+		crd.setAction(new ColorBasedVpAction(CardColor.RED, 1));
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Strategists Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.ORE, 2);
 		crd.addCost(Resource.STONE, 1);
 		crd.addCost(Resource.CLOTH, 1);
-		crd.setAction(new NeighborDefeatVpAction() );  
+		crd.setAction(new NeighborDefeatVpAction());
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Shipowners Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.WOOD, 3);
 		crd.addCost(Resource.PAPYRUS, 1);
 		crd.addCost(Resource.GLASS, 1);
-		crd.setAction(new ThreeColorBasedVpAction() );  
+		crd.setAction(new ThreeColorBasedVpAction());
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Scientists Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.WOOD, 2);
 		crd.addCost(Resource.ORE, 2);
 		crd.addCost(Resource.PAPYRUS, 1);
-		crd.setAction(new FreeSciSymbolAction() );
+		crd.setAction(new FreeSciSymbolAction());
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Magistrates Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.WOOD, 3);
 		crd.addCost(Resource.STONE, 1);
 		crd.addCost(Resource.CLOTH, 1);
-		crd.setAction(new ColorBasedVpAction(CardColor.BLUE, 1) ); 
+		crd.setAction(new ColorBasedVpAction(CardColor.BLUE, 1));
 		guildDeck.add(crd);
-		
+
 		crd = new Card("Builders Guild", 3, 3, CardColor.PURPLE);
 		crd.addCost(Resource.STONE, 2);
 		crd.addCost(Resource.BRICK, 2);
 		crd.addCost(Resource.GLASS, 1);
-		crd.setAction(new StageVpAction() );
+		crd.setAction(new StageVpAction());
 		guildDeck.add(crd);
-		
+
 	}
-	
+
 	/**
-	 * Builds the deck.
+	 * Builds the deck.<br>
+	 * 建立除紫色协会牌外的所有牌
 	 */
-	void buildDeck(){
+	void buildDeck() {
 		Card crd;
 
-		// Age I  brown cards
-		
-		crd = new Card("Lumber Yard", 1, 3, CardColor.BROWN );
+		// Age I brown cards
+
+		crd = new Card("Lumber Yard", 1, 3, CardColor.BROWN);
 		crd.addCost(Resource.FREE, 0);
 		crd.addGoods(Resource.WOOD, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 
 		deck.add(crd);
@@ -236,7 +251,7 @@ public class CardManager {
 		crd.addGoods(Resource.STONE, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -245,7 +260,7 @@ public class CardManager {
 		crd.addGoods(Resource.BRICK, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -254,7 +269,7 @@ public class CardManager {
 		crd.addGoods(Resource.ORE, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -288,14 +303,14 @@ public class CardManager {
 		crd.addGoods(Resource.ORE_STONE, 1);
 		deck.add(crd);
 
-		//  Age II Brown Cards
+		// Age II Brown Cards
 
 		crd = new Card("Saw Mill", 2, 3, CardColor.BROWN);
 		crd.addCost(Resource.COIN, 1);
 		crd.addGoods(Resource.WOOD, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -304,7 +319,7 @@ public class CardManager {
 		crd.addGoods(Resource.STONE, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -313,7 +328,7 @@ public class CardManager {
 		crd.addGoods(Resource.BRICK, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -322,27 +337,27 @@ public class CardManager {
 		crd.addGoods(Resource.ORE, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
-		//  Age I & II Grey Cards
+		// Age I & II Grey Cards
 
 		crd = new Card("Loom", 1, 3, CardColor.GREY);
 		crd.addCost(Resource.FREE, 0);
 		crd.addGoods(Resource.CLOTH, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(3);
 		crd.setAge(2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -351,16 +366,16 @@ public class CardManager {
 		crd.addGoods(Resource.GLASS, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(3);
 		crd.setAge(2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -369,27 +384,27 @@ public class CardManager {
 		crd.addGoods(Resource.PAPYRUS, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(3);
 		crd.setAge(2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		//	Age I  Red Cards
+		// Age I Red Cards
 
 		crd = new Card("Stockade", 1, 3, CardColor.RED);
 		crd.addCost(Resource.WOOD, 1);
 		crd.addGoods(Resource.SHEILD, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -398,7 +413,7 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -407,11 +422,11 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
-		//	Age II Red Cards
+		// Age II Red Cards
 
 		crd = new Card("Walls", 2, 3, CardColor.RED);
 		crd.addCost(Resource.STONE, 3);
@@ -419,7 +434,7 @@ public class CardManager {
 		crd.addToFreeList("Fortifications");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -430,11 +445,11 @@ public class CardManager {
 		crd.addToFreeList("Circus");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -445,7 +460,7 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -455,11 +470,11 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 2);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		// 	Age III Red Cards
+		// Age III Red Cards
 
 		crd = new Card("Fortifications", 3, 3, CardColor.RED);
 		crd.addCost(Resource.ORE, 3);
@@ -467,7 +482,7 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 3);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -477,11 +492,11 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 3);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -492,11 +507,11 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 3);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -506,18 +521,18 @@ public class CardManager {
 		crd.addGoods(Resource.SHEILD, 3);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		//	Age I Blue Cards
+		// Age I Blue Cards
 
 		crd = new Card("Pawnshop", 1, 4, CardColor.BLUE);
 		crd.addCost(Resource.FREE, 0);
 		crd.addGoods(Resource.VP, 3);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		crd.setAge(1);
 		deck.add(crd);
@@ -528,7 +543,7 @@ public class CardManager {
 		crd.addToFreeList("Aqueduct");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		crd.setAge(1);
 		deck.add(crd);
@@ -539,7 +554,7 @@ public class CardManager {
 		crd.addToFreeList("Temple");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		crd.setAge(1);
 		deck.add(crd);
@@ -550,19 +565,19 @@ public class CardManager {
 		crd.addToFreeList("Statue");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		crd.setAge(1);
 		deck.add(crd);
 
-		// 	Age II Blue Cards
+		// Age II Blue Cards
 
 		crd = new Card("Aqueduct", 2, 3, CardColor.BLUE);
 		crd.addCost(Resource.STONE, 3);
 		crd.addGoods(Resource.VP, 5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -574,7 +589,7 @@ public class CardManager {
 		crd.addToFreeList("Pantheon");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -585,7 +600,7 @@ public class CardManager {
 		crd.addToFreeList("Gardens");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -595,12 +610,11 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 4);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-
-		//	Age III Blue Cards
+		// Age III Blue Cards
 
 		crd = new Card("Pantheon", 3, 3, CardColor.BLUE);
 		crd.addCost(Resource.BRICK, 2);
@@ -611,7 +625,7 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 7);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -621,7 +635,7 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -632,11 +646,11 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -651,7 +665,7 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 8);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -662,56 +676,56 @@ public class CardManager {
 		crd.addGoods(Resource.VP, 6);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		//	Age I Yellow Cards
+		// Age I Yellow Cards
 
 		crd = new Card("Tavern", 1, 4, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
 		crd.addGoods(Resource.COIN, 5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
 		crd = new Card("East Trading Post", 1, 3, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
-		crd.setAction(new DiscountAction(DiscountAction.DiscountType.RIGHT_RAW ));
+		crd.setAction(new DiscountAction(DiscountAction.DiscountType.RIGHT_RAW));
 		crd.addToFreeList("Forum");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
 		crd = new Card("West Trading Post", 1, 3, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
-		crd.setAction(new DiscountAction(DiscountAction.DiscountType.LEFT_RAW) );
+		crd.setAction(new DiscountAction(DiscountAction.DiscountType.LEFT_RAW));
 		crd.addToFreeList("Forum");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
-		
+
 		crd = new Card("Marketplace", 1, 3, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
-		crd.setAction(new DiscountAction(DiscountAction.DiscountType.BOTH_MANUF) );
+		crd.setAction(new DiscountAction(DiscountAction.DiscountType.BOTH_MANUF));
 		crd.addToFreeList("Caravansery");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
-		// 	Age II Yellow Cards
+		// Age II Yellow Cards
 
 		crd = new Card("Forum", 2, 3, CardColor.YELLOW);
 		crd.addCost(Resource.BRICK, 2);
@@ -719,11 +733,11 @@ public class CardManager {
 		crd.addToFreeList("Haven");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
-		
-		crd = (Card)crd.clone();
+
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -733,80 +747,80 @@ public class CardManager {
 		crd.addToFreeList("Lighthouse");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
-		
-		crd = (Card)crd.clone();
+
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
-		
+
 		crd = new Card("Vineyard", 2, 3, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
-		crd.setAction(new ColorBasedIncomeAction(CardColor.BROWN, 1) );
+		crd.setAction(new ColorBasedIncomeAction(CardColor.BROWN, 1));
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
-		
+
 		crd = new Card("Bazar", 2, 4, CardColor.YELLOW);
 		crd.addCost(Resource.FREE, 0);
-		crd.setAction(new ColorBasedIncomeAction(CardColor.GREY, 2) );
+		crd.setAction(new ColorBasedIncomeAction(CardColor.GREY, 2));
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
-		// 	Age III Yellow Cards
-		
+		// Age III Yellow Cards
+
 		crd = new Card("Haven", 3, 3, CardColor.YELLOW);
 		crd.addCost(Resource.CLOTH, 1);
 		crd.addCost(Resource.ORE, 1);
 		crd.addCost(Resource.WOOD, 1);
-		crd.setAction(new ColorIncAndVpAction(CardColor.BROWN, 1) );
+		crd.setAction(new ColorIncAndVpAction(CardColor.BROWN, 1));
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
-		
+
 		crd = new Card("Lighthouse", 3, 3, CardColor.YELLOW);
 		crd.addCost(Resource.GLASS, 1);
 		crd.addCost(Resource.STONE, 1);
-		crd.setAction(new ColorIncAndVpAction(CardColor.YELLOW, 1) );
+		crd.setAction(new ColorIncAndVpAction(CardColor.YELLOW, 1));
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
 		crd = new Card("Chamber of Commerce", 3, 4, CardColor.YELLOW);
 		crd.addCost(Resource.BRICK, 2);
 		crd.addCost(Resource.PAPYRUS, 1);
-		crd.setAction(new ColorIncAndVpAction(CardColor.GREY, 2) );
+		crd.setAction(new ColorIncAndVpAction(CardColor.GREY, 2));
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
-		
+
 		crd = new Card("Arena", 3, 3, CardColor.YELLOW);
 		crd.addCost(Resource.ORE, 1);
 		crd.addCost(Resource.STONE, 2);
-		crd.setAction(new StageIncAndVpAction() );  	
+		crd.setAction(new StageIncAndVpAction());
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
-		
-		crd = (Card)crd.clone();
+
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
-		
-		// 	Age I Green Cards
+
+		// Age I Green Cards
 
 		crd = new Card("Apothecary", 1, 3, CardColor.GREEN);
 		crd.addCost(Resource.CLOTH, 1);
@@ -815,7 +829,7 @@ public class CardManager {
 		crd.addToFreeList("Dispensary");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -826,7 +840,7 @@ public class CardManager {
 		crd.addToFreeList("Archery Range");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -837,11 +851,11 @@ public class CardManager {
 		crd.addToFreeList("Library");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
-		// 	Age II Green Cards
+		// Age II Green Cards
 
 		crd = new Card("Dispensary", 2, 3, CardColor.GREEN);
 		crd.addCost(Resource.ORE, 2);
@@ -851,7 +865,7 @@ public class CardManager {
 		crd.addToFreeList("Lodge");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -863,7 +877,7 @@ public class CardManager {
 		crd.addToFreeList("Observatory");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
@@ -875,7 +889,7 @@ public class CardManager {
 		crd.addToFreeList("University");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -887,11 +901,11 @@ public class CardManager {
 		crd.addToFreeList("Study");
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
-		// 	Age III  Green Cards
+		// Age III Green Cards
 
 		crd = new Card("Lodge", 3, 3, CardColor.GREEN);
 		crd.addCost(Resource.BRICK, 2);
@@ -900,7 +914,7 @@ public class CardManager {
 		crd.addGoods(Resource.COMPASS, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(6);
 		deck.add(crd);
 
@@ -911,7 +925,7 @@ public class CardManager {
 		crd.addGoods(Resource.COG, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -922,7 +936,7 @@ public class CardManager {
 		crd.addGoods(Resource.TABLET, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(4);
 		deck.add(crd);
 
@@ -932,7 +946,7 @@ public class CardManager {
 		crd.addGoods(Resource.COMPASS, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(7);
 		deck.add(crd);
 
@@ -943,11 +957,10 @@ public class CardManager {
 		crd.addGoods(Resource.COG, 1);
 		deck.add(crd);
 
-		crd = (Card)crd.clone();
+		crd = (Card) crd.clone();
 		crd.setplayerNumber(5);
 		deck.add(crd);
 
+	} // end of buildDeck method
 
-	}  // end of buildDeck method
-
-}		// end of CardManager Class
+} // end of CardManager Class

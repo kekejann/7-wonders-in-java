@@ -41,25 +41,25 @@ public class GameManager {
 
 	/**
 	 * The card manager. <br>
-	 * CardManager类的实例的引用
+	 * 卡牌的管理类。
 	 */
 	CardManager cardManager;
 
 	/**
 	 * The players. <br>
-	 * Player类的实例的数组
+	 * 存储所有玩家的数组。
 	 */
 	Player[] players;
 
 	/**
 	 * The boards.<br>
-	 * Board类的实例的数组
+	 * 存储所有奇迹板的数组。
 	 */
 	Board[] boards;
 
 	/**
 	 * The hands.<br>
-	 * Hand类的实例的数组
+	 * 存储手牌堆的数组。
 	 */
 	Hand[] hands;
 
@@ -71,7 +71,7 @@ public class GameManager {
 
 	/**
 	 * The testing output. <br>
-	 * 测试输出
+	 * 存储测试输出的数组
 	 */
 	public StringBuilder[] out;
 
@@ -110,6 +110,12 @@ public class GameManager {
 	/**
 	 * Start the game.<br>
 	 * 开始游戏
+	 * <p>
+	 * Set number of players, make a CardManager, make Players, make Boards, and
+	 * set the built-in AI player and two neighbors for every board.(Including
+	 * make a StringBuilder array for debug output)<br>
+	 * 设置玩家数量，根据人数新建一个CardManager、对应数量的Player和Board，并且确定每个Board两边相邻的Board，
+	 * 最后设置每个Board的玩家为内置AI.（还包括建立一个StringBuilder对象数组来管理调试输出）
 	 * 
 	 * @param numPlyers
 	 *            the number of players. 玩家数量
@@ -225,12 +231,15 @@ public class GameManager {
 	/**
 	 * Start an age.<br>
 	 * 开始一个时代
-	 * 
+	 * <p>Get the hand decks for this age<br>
+	 * 获取此时代的手牌。
 	 * @param ageNum
 	 *            the age number.时代序号(1/2/3)
 	 */
 	public void startAge(int ageNum) {
 		hands = cardManager.setupHands(ageNum);
+
+		// debug output
 		System.out.println("Start Age " + ageNum + "\n");
 		for (StringBuilder sb : out) {
 			sb.append("\nStart Age " + ageNum + "\n");
@@ -244,7 +253,8 @@ public class GameManager {
 	/**
 	 * Start a turn.<br>
 	 * 开始一个回合
-	 * 
+	 * <p>Pass the hand decks(clockwise/counter-clockwise) to the corresponding boards, and ask every board to take its turn one by one.<br>
+	 * (按顺时针或逆时针)将手牌传给相应的奇迹，并逐个地请求奇迹来完成该回合。 
 	 * @param trnNum
 	 *            the turn number. 回合序号
 	 */
@@ -256,7 +266,9 @@ public class GameManager {
 			out[ind + 1].append("\nTurn " + trnNum);
 			out[ind + 1].append("\n" + board);
 			System.out.println("\n\n" + board);
-			board.takeTurn(hands[(ind + trnNum) % numPlayers], trnNum);
+			
+			board.takeTurn(hands[(ind + trnNum) % numPlayers], trnNum);	//Q: What if Age 2 ?
+			
 			ind++;
 			// out[ind].append("\n" + board );
 		}
@@ -265,7 +277,8 @@ public class GameManager {
 	/**
 	 * Do end of turn.<br>
 	 * 回合结束时的结算
-	 * 
+	 * <p>Add the income of every board into their treasury<br>
+	 * 各方将该回合的收入加入各自的金库中
 	 * @param trnNum
 	 *            the turn number.回合序号
 	 */
@@ -345,6 +358,7 @@ public class GameManager {
 		GameManager gm = GameManager.getManager();
 		gm.startGame(4);
 
+		// Set the player of the first board as the Human Player
 		Player player = new HumanDialogBasedPlayer();
 		player.setBoard(gm.boards[0]);
 		gm.boards[0].setPlayer(player);
@@ -359,15 +373,14 @@ public class GameManager {
 			// "      " + b.getRightNeighbor().getName() + "\n");
 		}
 
+		// The age loop
 		for (int age = 1; age <= 3; age++) {
 
 			gm.startAge(age);
-
 			for (int trn = 1; trn < 7; trn++) {
 				gm.startTurn(trn);
 				gm.doEndOfTurn(trn);
 			}
-
 			gm.doEndOfAge(age);
 
 			System.out.println("\n\nAfter Age " + age);
@@ -375,6 +388,7 @@ public class GameManager {
 				sb.append("\n\nAfter Age " + age);
 			}
 
+			// Debug output
 			int ind = 0;
 			for (Board b : gm.boards) {
 				System.out.print(b);
@@ -404,11 +418,12 @@ public class GameManager {
 				gm.out[ind].append("\n");
 				System.out.println("\n");
 				ind++;
-			}
-		}
+			}// End of debug output
+		}// End of the age loop
 
 		gm.doEndOfGame();
 
+		// Show game result
 		int ind = 0;
 		String[] dirStr = { "vs Left Neighbor : ", "vs Right Neighbor: " };
 		int totalMilVPs = 0, oneNghbr = 0;
@@ -446,7 +461,7 @@ public class GameManager {
 			gm.out[ind].append("\n");
 			System.out.println("\n");
 			ind++;
-		}
+		}// End of show of game result
 
 		// display one of the board's game history
 		System.out.println(gm.out[0].toString());

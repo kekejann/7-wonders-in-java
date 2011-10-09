@@ -11,7 +11,7 @@ public class BoardFactory {
 	 * Make a side boards.
 	 * 
 	 * @param num
-	 *            the num
+	 *            the number of boards
 	 * @return the board[]
 	 */
 	public static Board[] makeASideBoards(int num){
@@ -36,7 +36,7 @@ public class BoardFactory {
 	 * Make b side boards.
 	 * 
 	 * @param num
-	 *            the num
+	 *            the number of boards
 	 * @return the board[]
 	 */
 	public static Board[] makeBSideBoards(int num){
@@ -58,10 +58,10 @@ public class BoardFactory {
 	}
 	
 	/**
-	 * Make aand b side boards.
+	 * Make A and B side boards.
 	 * 
 	 * @param num
-	 *            the num
+	 *            the number of boards
 	 * @return the board[]
 	 */
 	public static Board[] makeAandBSideBoards(int num){
@@ -89,7 +89,7 @@ public class BoardFactory {
 	 * Shuffle.
 	 * 
 	 * @param brds
-	 *            the brds
+	 *            the boards
 	 */
 	private static void shuffle ( Board[] brds){
 		Board temp;
