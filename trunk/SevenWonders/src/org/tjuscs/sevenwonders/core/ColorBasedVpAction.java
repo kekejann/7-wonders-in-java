@@ -1,22 +1,22 @@
-package org.tjuscs.sevenwonders.core;
+﻿package org.tjuscs.sevenwonders.core;
 
 /**
  * The Class ColorBasedVpAction.
  */
 public class ColorBasedVpAction implements Action, DelayedAction {
-	
+
 	/** The color. */
 	CardColor color;
-	
+
 	/** The vps. */
 	int vps;
-	
+
 	/** The board. */
 	Board board;
-	
+
 	/** The right count. */
 	int leftCount, rightCount;
-	
+
 	/**
 	 * Instantiates a new color based vp action.
 	 * 
@@ -25,43 +25,51 @@ public class ColorBasedVpAction implements Action, DelayedAction {
 	 * @param inc
 	 *            the inc
 	 */
-	public ColorBasedVpAction(CardColor clr, int inc){
+	public ColorBasedVpAction(CardColor clr, int inc) {
 		color = clr;
 		vps = inc;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.tjuscs.sevenwonders.core.Action#activate(org.tjuscs.sevenwonders.core.Board)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.tjuscs.sevenwonders.core.Action#activate(org.tjuscs.sevenwonders.
+	 * core.Board)
 	 */
-	public void activate(Board brd) {	
+	public void activate(Board brd) {
 		board = brd;
 		GameManager.getManager().addEOTDelayedAction(this);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.DelayedAction#doDelayedAction()
 	 */
 	public void doDelayedAction() {
 		int newLeftCount = board.getLeftNeighbor().getColorCount(color);
 		int newRightCount = board.getRightNeighbor().getColorCount(color);
-		
+
 		int newStructures = 0;
-		if( newLeftCount > leftCount ){
+		if (newLeftCount > leftCount) {
 			newStructures = newLeftCount - leftCount;
 			leftCount = newLeftCount;
 		}
-		if( newRightCount > rightCount ){
+		if (newRightCount > rightCount) {
 			newStructures += newRightCount - rightCount;
 			rightCount = newRightCount;
 		}
-		
-		board.addToVPs(newStructures * vps);				
+
+		board.addToVPs(newStructures * vps);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString(){
+	public String toString() {
 		return "vps based on neighbors " + color.toString() + " cards";
 	}
 }

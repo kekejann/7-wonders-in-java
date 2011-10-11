@@ -1,4 +1,4 @@
-package org.tjuscs.sevenwonders.core;
+ï»¿package org.tjuscs.sevenwonders.core;
 
 import java.util.*;
 
@@ -31,16 +31,16 @@ public class CardManager {
 
 	/**
 	 * Instantiates a new card manager.<br>
-	 * CardManager¹¹Ôìº¯Êı
+	 * CardManageræ„é€ å‡½æ•°
 	 * 
 	 * @param playerNum
-	 *            the player number.Íæ¼ÒÈË”µ
+	 *            the player number.ç©å®¶äººæ•°
 	 */
 	public CardManager(int playerNum) {
 		deck = new ArrayList<Card>(140);
 		guildDeck = new ArrayList<Card>(10);
 		discard = new LinkedList<Card>();
-		hand = new Hand();						//Q: Is this used?
+		hand = new Hand(); // Q: Is this used?
 		buildGuildDeck();
 		buildDeck();
 		numPlayers = playerNum;
@@ -48,18 +48,18 @@ public class CardManager {
 
 	/**
 	 * Setup hands.<br>
-	 * ÉèÖÃÊÖÅÆ¡£
+	 * è®¾ç½®æ‰‹ç‰Œã€‚
 	 * <p>
 	 * Get cards we need from the all-no-guild deck according to the age and the
 	 * number of players. If it's the 3rd age, also randomly get proper number
 	 * of guild cards from the guild deck. At last, shuffle the cards we get,
 	 * separate them into different Hands, and return the hands<br>
-	 * ¸ù¾İËù´¦Ê±´úºÍÍæ¼ÒÊıÁ¿´ÓËùÓĞ·ÇĞ­»áÅÆÖĞÈ¡³öĞèÒªµÄÅÆ¡£Èç¹ûÊÇµÚÈıÊ±´ú£¬»¹ÒªËæ»úµØ´ÓĞ­»áÅÆÖĞÈ¡³öºÏÊÊÊıÁ¿µÄÅÆ¡£ ×îºóÏ´ÅÆ²¢·Ö·¢µ½²»Í¬ÊÖÅÆ¶ÑÖĞ¡£
+	 * æ ¹æ®æ‰€å¤„æ—¶ä»£å’Œç©å®¶æ•°é‡ä»æ‰€æœ‰éåä¼šç‰Œä¸­å–å‡ºéœ€è¦çš„ç‰Œã€‚å¦‚æœæ˜¯ç¬¬ä¸‰æ—¶ä»£ï¼Œè¿˜è¦éšæœºåœ°ä»åä¼šç‰Œä¸­å–å‡ºåˆé€‚æ•°é‡çš„ç‰Œã€‚ æœ€åæ´—ç‰Œå¹¶åˆ†å‘åˆ°ä¸åŒæ‰‹ç‰Œå †ä¸­ã€‚
 	 * 
 	 * @param age
 	 *            the age number
 	 * @return the hand[]<br>
-	 *         ÔOÖÃºÃµÄÊÖÅÆ
+	 *         è®¾ç½®å¥½çš„æ‰‹ç‰Œ
 	 */
 	public Hand[] setupHands(int age) {
 		ArrayList<Card> ageDeck = new ArrayList<Card>(7 * numPlayers);
@@ -113,10 +113,10 @@ public class CardManager {
 
 	/**
 	 * Removes a card from the discarded deck.<br>
-	 * ´ÓÆúÅÆ¶ÑÈ¥³ıÒ»ÕÅÅÆ
+	 * ä»å¼ƒç‰Œå †å»é™¤ä¸€å¼ ç‰Œ
 	 * 
 	 * @param card
-	 *            the card.¿¨ÅÆ
+	 *            the card.å¡ç‰Œ
 	 */
 	public void removeFromDiscard(Card card) {
 		discard.remove(card);
@@ -124,10 +124,10 @@ public class CardManager {
 
 	/**
 	 * Shuffle<br>
-	 * Ï´ÅÆ
+	 * æ´—ç‰Œ
 	 * 
 	 * @param deck
-	 *            the deck.ÅÆ¶Ñ
+	 *            the deck.ç‰Œå †
 	 */
 	private void shuffle(List<Card> deck) {
 		int deckSize = deck.size();
@@ -146,9 +146,9 @@ public class CardManager {
 
 	/**
 	 * Builds the guild deck.<br>
-	 * ½¨Á¢Ğ­»áÅÆ£¨×ÏÉ«ÅÆ£©<br>
+	 * å»ºç«‹åä¼šç‰Œï¼ˆç´«è‰²ç‰Œï¼‰<br>
 	 * Needs to be a separate deck because only some of them are used each game.<br>
-	 * ĞèÒª½¨Á¢Ò»¸ö¶ÀÁ¢µÄÅÆ¶Ñ£¬ÒòÎªÆäÖĞÖ»ÓĞ²¿·ÖÅÆ»áÔÚÓÎÏ·ÖĞÊ¹ÓÃ¡£
+	 * éœ€è¦å»ºç«‹ä¸€ä¸ªç‹¬ç«‹çš„ç‰Œå †ï¼Œå› ä¸ºå…¶ä¸­åªæœ‰éƒ¨åˆ†ç‰Œä¼šåœ¨æ¸¸æˆä¸­ä½¿ç”¨ã€‚
 	 */
 	void buildGuildDeck() {
 
@@ -229,7 +229,7 @@ public class CardManager {
 
 	/**
 	 * Builds the deck.<br>
-	 * ½¨Á¢³ı×ÏÉ«Ğ­»áÅÆÍâµÄËùÓĞÅÆ
+	 * å»ºç«‹é™¤ç´«è‰²åä¼šç‰Œå¤–çš„æ‰€æœ‰ç‰Œ
 	 */
 	void buildDeck() {
 		Card crd;

@@ -18,7 +18,7 @@
 \n
 
 @section sec2 软件许可证
-- 我们计划采用<B>GPL 3.0</B>。
+- 我们计划采用<B><A HREF="http://www.gnu.org/licenses/gpl.html">GPL 3.0</A></B>。
 \n
 
 @section sec3 获取源码

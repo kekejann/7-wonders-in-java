@@ -1,19 +1,19 @@
-package org.tjuscs.sevenwonders.core;
-import java.util.Set;
+﻿package org.tjuscs.sevenwonders.core;
 
+import java.util.Set;
 
 /**
  * The Interface Buildable.
  */
 public interface Buildable {
-	
+
 	/**
 	 * Gets the costs.
 	 * 
 	 * @return the costs
 	 */
 	public Set<Resource> getCosts();
-	
+
 	/**
 	 * Cost cnt.
 	 * 
@@ -21,15 +21,15 @@ public interface Buildable {
 	 *            the r
 	 * @return the int
 	 */
-	public int costCnt( Resource r);
-	
+	public int costCnt(Resource r);
+
 	/**
 	 * Gets the goods.
 	 * 
 	 * @return the goods
 	 */
 	public Set<Resource> getGoods();
-	
+
 	/**
 	 * Goods cnt.
 	 * 
@@ -37,22 +37,22 @@ public interface Buildable {
 	 *            the r
 	 * @return the int
 	 */
-	public int goodsCnt( Resource r);
-	
+	public int goodsCnt(Resource r);
+
 	/**
 	 * Checks for action.
 	 * 
 	 * @return true, if successful
 	 */
-	public boolean hasAction();	
-	
+	public boolean hasAction();
+
 	/**
 	 * Checks for resources.
 	 * 
 	 * @return true, if successful
 	 */
-	public boolean hasResources();	
-	
+	public boolean hasResources();
+
 	/**
 	 * Checks for or resources.
 	 * 

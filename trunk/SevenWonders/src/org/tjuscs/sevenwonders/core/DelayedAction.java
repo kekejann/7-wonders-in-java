@@ -1,14 +1,14 @@
-package org.tjuscs.sevenwonders.core;
+锘縫ackage org.tjuscs.sevenwonders.core;
 
 /**
  * The Interface DelayedAction.<br>
- * DelayedAction接口
+ * DelayedAction鎺ュ彛
  */
 interface DelayedAction {
 
 	/**
 	 * Do delayed action.<br>
-	 * 启动延时动作
+	 * 鍚姩寤舵椂鍔ㄤ綔
 	 */
 	void doDelayedAction();
 }
