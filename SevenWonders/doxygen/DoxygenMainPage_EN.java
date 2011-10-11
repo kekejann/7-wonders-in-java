@@ -1,4 +1,4 @@
-/*! 
+﻿/*! 
 @mainpage 7 Wonders Open Source Project
 
 @image html 7W_logo.png
@@ -18,7 +18,7 @@ This is only a practice project for several students who major in the Software E
 \n
 
 @section sec2 License
-- We are planning to use <B>GPL 3.0</B>.
+- We are planning to use <B><A HREF="http://www.gnu.org/licenses/gpl.html">GPL 3.0</A></B>.
 \n
 
 @section sec3 Get the source code

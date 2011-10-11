@@ -1,33 +1,34 @@
-package org.tjuscs.sevenwonders.core;
+﻿package org.tjuscs.sevenwonders.core;
+
 import java.util.*;
 
 /**
  * The Class Stage.
  */
 public class Stage implements Cloneable, Buildable {
-	
+
 	/** The cost. */
 	EnumMap<Resource, Integer> cost;
-	
+
 	/** The goods. */
 	EnumMap<Resource, Integer> goods;
-	
+
 	/** The card. */
 	Card card;
-	
+
 	/** The stage num. */
 	int stageNum;
-	
+
 	/** The name. */
 	String name;
-	
+
 	/** The action. */
 	Action action;
 
 	/**
 	 * Instantiates a new stage.
 	 */
-	public Stage (){
+	public Stage() {
 		cost = new EnumMap<Resource, Integer>(Resource.class);
 		goods = new EnumMap<Resource, Integer>(Resource.class);
 		action = null;
@@ -42,18 +43,20 @@ public class Stage implements Cloneable, Buildable {
 	 * @param stgNum
 	 *            the stg num
 	 */
-	public Stage (String nm, int stgNum){
+	public Stage(String nm, int stgNum) {
 		cost = new EnumMap<Resource, Integer>(Resource.class);
 		goods = new EnumMap<Resource, Integer>(Resource.class);
 		action = null;
-		stageNum = stgNum ;
+		stageNum = stgNum;
 		name = nm;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#clone()
 	 */
-	public Object clone(){
+	public Object clone() {
 		Stage stage = null;
 		try {
 			stage = (Stage) super.clone();
@@ -62,23 +65,25 @@ public class Stage implements Cloneable, Buildable {
 		}
 		return stage;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString(){
+	public String toString() {
 		StringBuilder str = new StringBuilder(name);
 		Set<Resource> costSet = cost.keySet();
 		Set<Resource> goodsSet = goods.keySet();
-		str.append(" Cost: " );
-		for(Resource r: costSet){
+		str.append(" Cost: ");
+		for (Resource r : costSet) {
 			str.append(cost.get(r) + " " + r.toString() + "  ");
 		}
-		str.append("Provides: " );
-		for(Resource r: goodsSet){
+		str.append("Provides: ");
+		for (Resource r : goodsSet) {
 			str.append(goods.get(r) + " " + r.toString() + "  ");
 		}
-//		str.append("");
+		// str.append("");
 		return str.toString();
 	}
 
@@ -88,7 +93,7 @@ public class Stage implements Cloneable, Buildable {
 	 * @param nm
 	 *            the new name
 	 */
-	public void setName(String nm){
+	public void setName(String nm) {
 		name = nm;
 	}
 
@@ -97,7 +102,7 @@ public class Stage implements Cloneable, Buildable {
 	 * 
 	 * @return the name
 	 */
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
@@ -109,7 +114,7 @@ public class Stage implements Cloneable, Buildable {
 	 * @param i
 	 *            the i
 	 */
-	public void addCost(Resource r, int i){
+	public void addCost(Resource r, int i) {
 		cost.put(r, i);
 	}
 
@@ -121,40 +126,48 @@ public class Stage implements Cloneable, Buildable {
 	 * @param i
 	 *            the i
 	 */
-	public void addGoods(Resource r, int i){
+	public void addGoods(Resource r, int i) {
 		goods.put(r, i);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#getGoods()
 	 */
-	public Set<Resource> getGoods(){
+	public Set<Resource> getGoods() {
 		return goods.keySet();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#getCosts()
 	 */
-	public Set<Resource> getCosts(){
+	public Set<Resource> getCosts() {
 		return cost.keySet();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.tjuscs.sevenwonders.core.Buildable#costCnt(org.tjuscs.sevenwonders.core.Resource)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.tjuscs.sevenwonders.core.Buildable#costCnt(org.tjuscs.sevenwonders
+	 * .core.Resource)
 	 */
-	public int costCnt( Resource r){
+	public int costCnt(Resource r) {
 		return cost.get(r);
 	}
-	
+
 	/**
 	 * Gets the stage number.
 	 * 
 	 * @return the stage number
 	 */
-	public int getStageNumber(){
+	public int getStageNumber() {
 		return stageNum;
 	}
-	
+
 	/**
 	 * Gets the card.
 	 * 
@@ -174,10 +187,14 @@ public class Stage implements Cloneable, Buildable {
 		this.card = card;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.tjuscs.sevenwonders.core.Buildable#goodsCnt(org.tjuscs.sevenwonders.core.Resource)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.tjuscs.sevenwonders.core.Buildable#goodsCnt(org.tjuscs.sevenwonders
+	 * .core.Resource)
 	 */
-	public int goodsCnt( Resource r){
+	public int goodsCnt(Resource r) {
 		return goods.get(r);
 	}
 
@@ -186,7 +203,7 @@ public class Stage implements Cloneable, Buildable {
 	 * 
 	 * @return the action
 	 */
-	public Action getAction(){
+	public Action getAction() {
 		return action;
 	}
 
@@ -199,38 +216,42 @@ public class Stage implements Cloneable, Buildable {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasAction()
 	 */
-	public boolean hasAction(){
-		if(action == null)
+	public boolean hasAction() {
+		if (action == null)
 			return false;
 		else
 			return true;
 	}
-		
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasResources()
 	 */
-	public boolean hasResources(){
-		if(action == null)
+	public boolean hasResources() {
+		if (action == null)
 			return true;
 		else
 			return false;
 	}
-	
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasOrResources()
 	 */
-	public boolean hasOrResources(){
-		for(Resource r: getGoods()){
-			if(r.index() == -1)
+	public boolean hasOrResources() {
+		for (Resource r : getGoods()) {
+			if (r.index() == -1)
 				return true;
 		}
 		return false;
 	}
-	
-}  // end of Stage class
+
+} // end of Stage class

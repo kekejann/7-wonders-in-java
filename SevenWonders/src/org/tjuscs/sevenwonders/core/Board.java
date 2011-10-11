@@ -22,7 +22,7 @@ public class Board {
 	/** The color count. */
 	Map<CardColor, Integer> colorCount;
 
-	/** The brd name. */
+	/** The board name. */
 	String brdName;
 
 	/** The initial res. */
@@ -91,21 +91,26 @@ public class Board {
 	int leftRawCost = 2, rightRawCost = 2, manfCost = 2;
 
 	/**
-	 * Instantiates a new board.
+	 * Default constructor.<br>
+	 * 默认构造函数
+	 * <p>
+	 * Build a no-name board(wonder) with no initial resource and 3 stages<br>
+	 * 建立一个没有名字、没有初始资源、包含3个级别的奇迹(板)。
 	 */
 	public Board() {
 		this("NO Name", Resource.FREE, 3);
 	}
 
 	/**
-	 * Instantiates a new board.
+	 * Constructor with 3 parameters.<br>
+	 * 带有3个参数的构造函数
 	 * 
 	 * @param name
-	 *            the name
+	 *            the name of the board(wonder).奇迹（板）名称
 	 * @param initRes
-	 *            the init res
+	 *            the initial resource.初始资源
 	 * @param numStages
-	 *            the num stages
+	 *            the number of stages.奇迹级别数(2-4)
 	 */
 	public Board(String name, Resource initRes, int numStages) {
 		goods = new EnumMap<Resource, Integer>(Resource.class);
@@ -380,12 +385,16 @@ public class Board {
 	}
 
 	/**
-	 * Take turn.
+	 * The Wonder(Board) takes their turn.<br>
+	 * 奇迹开始它的回合内的操作。
+	 * <p>
+	 * It calls the player to make choice and then implement the choice<br>
+	 * 奇迹调用玩家来做出选择，并实现该选择。
 	 * 
 	 * @param hand
-	 *            the hand
+	 *            the hand deck.分得的手牌堆
 	 * @param trnNum
-	 *            the trn num
+	 *            the turn number.回合序号
 	 */
 	public void takeTurn(Hand hand, int trnNum) {
 		CommandOption opt = player.makeChoice(buildCommandOptions(hand));
@@ -402,22 +411,25 @@ public class Board {
 		}
 	}
 
-	// TODO need to add logic for using 'or' x3 and x4 resources and then
-	// neighbor.
 	/**
-	 * Builds the command options.
+	 * Builds the command options according to the hand deck. <br>
+	 * 根据传入的手牌堆得出可用的命令选项
+	 * 
+	 * <p>
+	 * TODO need to add logic for using 'or' x3 and x4 resources and then
+	 * neighbor.
 	 * 
 	 * @param hand
-	 *            the hand
-	 * @return the command option[]
+	 *            the hand deck.手牌堆
+	 * @return the command options available<br>
+	 *         可用的命令
 	 */
-	@SuppressWarnings("unused")
 	public CommandOption[] buildCommandOptions(Hand hand) {
 		CommandOption[] options = new CommandOption[hand.size()];
 		Card card = null;
-		Set<Resource> costSet = null;
-		int budget = goods.get(Resource.COIN);
-		int resNeeded;
+		// Set<Resource> costSet = null;
+		// int budget = goods.get(Resource.COIN);
+		// int resNeeded;
 		SimpleResList cardCost;
 		System.out.println("FreeList: " + freeList);
 

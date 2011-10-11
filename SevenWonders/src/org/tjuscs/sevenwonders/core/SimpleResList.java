@@ -1,4 +1,4 @@
-package org.tjuscs.sevenwonders.core;
+﻿package org.tjuscs.sevenwonders.core;
 
 /**
  * The Class SimpleResList.

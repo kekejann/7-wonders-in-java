@@ -1,18 +1,19 @@
-package org.tjuscs.sevenwonders.core;
+﻿package org.tjuscs.sevenwonders.core;
+
 import java.util.ArrayList;
 
 /**
  * The Class Hand.
  */
 public class Hand {
-	
+
 	/** The hand. */
 	ArrayList<Card> hand;
 
 	/**
 	 * Instantiates a new hand.
 	 */
-	public Hand(){
+	public Hand() {
 		hand = new ArrayList<Card>();
 	}
 
@@ -23,7 +24,7 @@ public class Hand {
 	 *            the ind
 	 * @return the card
 	 */
-	Card get(int ind){
+	Card get(int ind) {
 		return hand.get(ind);
 	}
 
@@ -34,10 +35,10 @@ public class Hand {
 	 *            the ind
 	 * @return the card
 	 */
-	Card remove(int ind){
+	Card remove(int ind) {
 		return hand.remove(ind);
 	}
-	
+
 	/**
 	 * Removes the.
 	 * 
@@ -45,10 +46,10 @@ public class Hand {
 	 *            the str
 	 * @return the card
 	 */
-	Card remove(String str){
+	Card remove(String str) {
 
-		for(Card crd : hand){
-			if(crd.getName().equals(str) ){
+		for (Card crd : hand) {
+			if (crd.getName().equals(str)) {
 				hand.remove(crd);
 				return crd;
 			}
@@ -65,7 +66,7 @@ public class Hand {
 	 *            the crd
 	 * @return the card
 	 */
-	Card set(int ind, Card crd){
+	Card set(int ind, Card crd) {
 		return hand.set(ind, crd);
 	}
 
@@ -76,7 +77,7 @@ public class Hand {
 	 *            the c
 	 * @return true, if successful
 	 */
-	boolean add(Card c){
+	boolean add(Card c) {
 		return hand.add(c);
 	}
 
@@ -85,17 +86,20 @@ public class Hand {
 	 * 
 	 * @return the int
 	 */
-	public int size(){
+	public int size() {
 		return hand.size();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString(){
-		StringBuilder str = new StringBuilder("Hand: Contains: " + hand.size() + " cards\n");
-		for(Card c : hand)
-			str.append( c.toString() + "\n") ;
+	public String toString() {
+		StringBuilder str = new StringBuilder("Hand: Contains: " + hand.size()
+				+ " cards\n");
+		for (Card c : hand)
+			str.append(c.toString() + "\n");
 		return str.toString();
 	}
 

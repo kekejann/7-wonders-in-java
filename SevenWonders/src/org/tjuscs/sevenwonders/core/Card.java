@@ -1,39 +1,40 @@
-package org.tjuscs.sevenwonders.core;
+﻿package org.tjuscs.sevenwonders.core;
+
 import java.util.*;
 
 /**
  * The Class Card.
  */
 public class Card implements Cloneable, Buildable {
-	
+
 	/** The cost. */
 	EnumMap<Resource, Integer> cost;
-	
+
 	/** The goods. */
 	EnumMap<Resource, Integer> goods;
-	
+
 	/** The free list. */
 	ArrayList<String> freeList;
-	
+
 	/** The name. */
 	String name;
-	
+
 	/** The color. */
 	CardColor color;
-	
+
 	/** The age. */
 	int age;
-	
+
 	/** The player number. */
 	int playerNumber;
-	
+
 	/** The action. */
 	Action action;
 
 	/**
 	 * Instantiates a new card.
 	 */
-	public Card (){
+	public Card() {
 		cost = new EnumMap<Resource, Integer>(Resource.class);
 		goods = new EnumMap<Resource, Integer>(Resource.class);
 		freeList = null;
@@ -53,7 +54,7 @@ public class Card implements Cloneable, Buildable {
 	 * @param clr
 	 *            the clr
 	 */
-	public Card (String nm, int age, int plynum, CardColor clr){
+	public Card(String nm, int age, int plynum, CardColor clr) {
 		cost = new EnumMap<Resource, Integer>(Resource.class);
 		goods = new EnumMap<Resource, Integer>(Resource.class);
 		freeList = null;
@@ -64,10 +65,12 @@ public class Card implements Cloneable, Buildable {
 		color = clr;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#clone()
 	 */
-	public Object clone(){
+	public Object clone() {
 		Card card = null;
 		try {
 			card = (Card) super.clone();
@@ -77,25 +80,27 @@ public class Card implements Cloneable, Buildable {
 		return card;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString(){
+	public String toString() {
 		StringBuilder str = new StringBuilder(name);
 		Set<Resource> costSet = cost.keySet();
 		Set<Resource> goodsSet = goods.keySet();
-		str.append("(AGE:" + age + " P#:" + playerNumber + " " + color + ")" );
-		str.append("\t  Cost: " );
-		for(Resource r: costSet){
+		str.append("(AGE:" + age + " P#:" + playerNumber + " " + color + ")");
+		str.append("\t  Cost: ");
+		for (Resource r : costSet) {
 			str.append(cost.get(r) + " " + r.toString() + "  ");
 		}
-		str.append("  Provides: " );
-		for(Resource r: goodsSet){
+		str.append("  Provides: ");
+		for (Resource r : goodsSet) {
 			str.append(goods.get(r) + " " + r.toString() + "  ");
 		}
-		if(this.hasAction())			
+		if (this.hasAction())
 			str.append(this.getAction().toString());
-//		str.append("\n");
+		// str.append("\n");
 		return str.toString();
 	}
 
@@ -105,8 +110,8 @@ public class Card implements Cloneable, Buildable {
 	 * @param str
 	 *            the str
 	 */
-	public void addToFreeList(String str){
-		if(freeList == null)
+	public void addToFreeList(String str) {
+		if (freeList == null)
 			freeList = new ArrayList<String>();
 		freeList.add(str);
 	}
@@ -116,12 +121,11 @@ public class Card implements Cloneable, Buildable {
 	 * 
 	 * @return the freelist iter
 	 */
-	public Iterator<String> getFreelistIter(){
-		if(freeList == null)
+	public Iterator<String> getFreelistIter() {
+		if (freeList == null)
 			freeList = new ArrayList<String>();
 		return freeList.iterator();
 	}
-
 
 	/**
 	 * Sets the name.
@@ -129,7 +133,7 @@ public class Card implements Cloneable, Buildable {
 	 * @param nm
 	 *            the new name
 	 */
-	public void setName(String nm){
+	public void setName(String nm) {
 		name = nm;
 	}
 
@@ -138,7 +142,7 @@ public class Card implements Cloneable, Buildable {
 	 * 
 	 * @return the name
 	 */
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
@@ -150,7 +154,7 @@ public class Card implements Cloneable, Buildable {
 	 * @param i
 	 *            the i
 	 */
-	public void addCost(Resource r, int i){
+	public void addCost(Resource r, int i) {
 		cost.put(r, i);
 	}
 
@@ -162,41 +166,53 @@ public class Card implements Cloneable, Buildable {
 	 * @param i
 	 *            the i
 	 */
-	public void addGoods(Resource r, int i){
+	public void addGoods(Resource r, int i) {
 		goods.put(r, i);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#getGoods()
 	 */
-	public Set<Resource> getGoods(){
+	public Set<Resource> getGoods() {
 		return goods.keySet();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.tjuscs.sevenwonders.core.Buildable#goodsCnt(org.tjuscs.sevenwonders.core.Resource)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.tjuscs.sevenwonders.core.Buildable#goodsCnt(org.tjuscs.sevenwonders
+	 * .core.Resource)
 	 */
-	public int goodsCnt( Resource r){
+	public int goodsCnt(Resource r) {
 		int cnt = 0;
-		if(goods.containsKey(r))
+		if (goods.containsKey(r))
 			cnt = goods.get(r);
 		return cnt;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#getCosts()
 	 */
-	public Set<Resource> getCosts(){
+	public Set<Resource> getCosts() {
 		return cost.keySet();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.tjuscs.sevenwonders.core.Buildable#costCnt(org.tjuscs.sevenwonders.core.Resource)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.tjuscs.sevenwonders.core.Buildable#costCnt(org.tjuscs.sevenwonders
+	 * .core.Resource)
 	 */
-	public int costCnt( Resource r){
+	public int costCnt(Resource r) {
 		return cost.get(r);
 	}
-	
+
 	/**
 	 * Gets the age.
 	 * 
@@ -222,7 +238,7 @@ public class Card implements Cloneable, Buildable {
 	 * @param act
 	 *            the new action
 	 */
-	public void setAction(Action act){
+	public void setAction(Action act) {
 		action = act;
 	}
 
@@ -231,50 +247,55 @@ public class Card implements Cloneable, Buildable {
 	 * 
 	 * @return the action
 	 */
-	public Action getAction(){
+	public Action getAction() {
 		return action;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasAction()
 	 */
-	public boolean hasAction(){
-		if(action == null)
+	public boolean hasAction() {
+		if (action == null)
 			return false;
 		else
 			return true;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasResources()
 	 */
-	public boolean hasResources(){
-		if(action == null)
+	public boolean hasResources() {
+		if (action == null)
 			return true;
 		else
 			return false;
 	}
-	
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.tjuscs.sevenwonders.core.Buildable#hasOrResources()
 	 */
-	public boolean hasOrResources(){
-		for(Resource r: getGoods()){
-			if(r.index() == -1)
+	public boolean hasOrResources() {
+		for (Resource r : getGoods()) {
+			if (r.index() == -1)
 				return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks if is free to build.
 	 * 
 	 * @return true, if is free to build
 	 */
-	public boolean isFreeToBuild(){
-		for(Resource r: getGoods()){
-			if(r == Resource.FREE)
+	public boolean isFreeToBuild() {
+		for (Resource r : getGoods()) {
+			if (r == Resource.FREE)
 				return true;
 		}
 		return false;
@@ -285,7 +306,7 @@ public class Card implements Cloneable, Buildable {
 	 * 
 	 * @return the color
 	 */
-	public CardColor getColor(){
+	public CardColor getColor() {
 		return color;
 	}
 
@@ -308,5 +329,4 @@ public class Card implements Cloneable, Buildable {
 		this.playerNumber = playNum;
 	}
 
-
-}	// end of Card class
+} // end of Card class

@@ -1,3 +1,32 @@
+ï»¿/**
+ * This is "7 wonders in Java" which is an Java implementation of the famous 
+ * same-name board game. 
+ * 
+ * Copyright (C) 2011 7Wonders Team in Tianjin University.
+ * 
+ * Original author and project advisor: Lonnie Heinke
+ * Current project manager: Miao Yukai
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later versions.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *	You can contact us by e-mail: tjumyk@gmail.com
+ *
+ * Attention: All of the source files are written with the UTF-8 encoding 
+ * system. So you may not see the correct Chinese documentation if you are using 
+ * other encoding systems!
+ */
+
 package org.tjuscs.sevenwonders.core;
 
 import java.util.ArrayList;
@@ -11,82 +40,82 @@ public class GameManager {
 
 	/**
 	 * The end-of-turn delayed action list.<br>
-	 * »ØºÏ½áÊøÊ±µÄÑÓÊ±¶¯×÷ÁĞ±í
+	 * å›åˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œåˆ—è¡¨
 	 */
 	ArrayList<DelayedAction> EOTurnDelayedActionList;
 
 	/**
 	 * The end-Of-turn remove list. <br>
-	 * »ØºÏ½áÊøÊ±µÄÑÓÊ±¶¯×÷Çå³ıÁĞ±í
+	 * å›åˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œæ¸…é™¤åˆ—è¡¨
 	 */
 	ArrayList<DelayedAction> EOTurnRemoveList;
 
 	/**
 	 * The end-of-age delayed action list. <br>
-	 * Ê±´ú½áÊøÊ±µÄÑÓÊ±¶¯×÷ÁĞ±í
+	 * æ—¶ä»£ç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œåˆ—è¡¨
 	 */
 	List<DelayedAction> EOAgeDelayedActionList;
 
 	/**
 	 * The end-of-game delayed action list. <br>
-	 * ÓÎÏ·½áÊøÊ±µÄÑÓÊ±¶¯×÷ÁĞ±í
+	 * æ¸¸æˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œåˆ—è¡¨
 	 */
 	List<DelayedAction> EOGameDelayedActionList;
 
 	/**
 	 * The reference to an object of GameManager class. <br>
-	 * GameManagerÀàµÄÊµÀıµÄÒıÓÃ
+	 * GameManagerç±»çš„å®ä¾‹çš„å¼•ç”¨
 	 */
 	private static GameManager gm;
 
 	/**
 	 * The card manager. <br>
-	 * ¿¨ÅÆµÄ¹ÜÀíÀà¡£
+	 * å¡ç‰Œçš„ç®¡ç†ç±»ã€‚
 	 */
 	CardManager cardManager;
 
 	/**
 	 * The players. <br>
-	 * ´æ´¢ËùÓĞÍæ¼ÒµÄÊı×é¡£
+	 * å­˜å‚¨æ‰€æœ‰ç©å®¶çš„æ•°ç»„ã€‚
 	 */
 	Player[] players;
 
 	/**
 	 * The boards.<br>
-	 * ´æ´¢ËùÓĞÆæ¼£°åµÄÊı×é¡£
+	 * å­˜å‚¨æ‰€æœ‰å¥‡è¿¹æ¿çš„æ•°ç»„ã€‚
 	 */
 	Board[] boards;
 
 	/**
 	 * The hands.<br>
-	 * ´æ´¢ÊÖÅÆ¶ÑµÄÊı×é¡£
+	 * å­˜å‚¨æ‰‹ç‰Œå †çš„æ•°ç»„ã€‚
 	 */
 	Hand[] hands;
 
 	/**
 	 * The number of players. <br>
-	 * Íæ¼ÒÊıÁ¿
+	 * ç©å®¶æ•°é‡
 	 */
 	int numPlayers;
 
 	/**
 	 * The testing output. <br>
-	 * ´æ´¢²âÊÔÊä³öµÄÊı×é
+	 * å­˜å‚¨æµ‹è¯•è¾“å‡ºçš„æ•°ç»„
 	 */
 	public StringBuilder[] out;
 
 	/**
 	 * The Constant LEFT & RIGHT. <br>
-	 * Á½¸ö³£Á¿LEFTºÍRIGHT
+	 * ä¸¤ä¸ªå¸¸é‡LEFTå’ŒRIGHT
 	 */
 	public static final int LEFT = 0, RIGHT = 1;
 
 	/**
 	 * Build a GameManager object and get the reference to it.<br>
-	 * ĞÂ½¨GameManagerÀàµÄ¶ÔÏó²¢»ñµÃÆäÒıÓÃ¡£
+	 * æ–°å»ºGameManagerç±»çš„å¯¹è±¡å¹¶è·å¾—å…¶å¼•ç”¨ã€‚
 	 * 
 	 * @return the reference to the GameManager object<br>
-	 *         GameManager¶ÔÏóµÄÒıÓÃ
+	 *         GameManagerå¯¹è±¡çš„å¼•ç”¨
 	 */
 	public static GameManager getManager() {
 		if (gm == null)
@@ -95,8 +124,8 @@ public class GameManager {
 	}
 
 	/**
-	 * Instantiates a new game manager£¬ it makes four lists of DelayedAction.<br>
-	 * GameManager¹¹Ôìº¯Êı,½¨Á¢ÁËËÄ¸öÑÓÊ±¶¯×÷ÁĞ±í¡£
+	 * Instantiates a new game managerï¼Œ it makes four lists of DelayedAction.<br>
+	 * GameManageræ„é€ å‡½æ•°,å»ºç«‹äº†å››ä¸ªå»¶æ—¶åŠ¨ä½œåˆ—è¡¨ã€‚
 	 * 
 	 * @see DelayedAction
 	 */
@@ -109,16 +138,16 @@ public class GameManager {
 
 	/**
 	 * Start the game.<br>
-	 * ¿ªÊ¼ÓÎÏ·
+	 * å¼€å§‹æ¸¸æˆ
 	 * <p>
 	 * Set number of players, make a CardManager, make Players, make Boards, and
 	 * set the built-in AI player and two neighbors for every board.(Including
 	 * make a StringBuilder array for debug output)<br>
-	 * ÉèÖÃÍæ¼ÒÊıÁ¿£¬¸ù¾İÈËÊıĞÂ½¨Ò»¸öCardManager¡¢¶ÔÓ¦ÊıÁ¿µÄPlayerºÍBoard£¬²¢ÇÒÈ·¶¨Ã¿¸öBoardÁ½±ßÏàÁÚµÄBoard£¬
-	 * ×îºóÉèÖÃÃ¿¸öBoardµÄÍæ¼ÒÎªÄÚÖÃAI.£¨»¹°üÀ¨½¨Á¢Ò»¸öStringBuilder¶ÔÏóÊı×éÀ´¹ÜÀíµ÷ÊÔÊä³ö£©
+	 * è®¾ç½®ç©å®¶æ•°é‡ï¼Œæ ¹æ®äººæ•°æ–°å»ºä¸€ä¸ªCardManagerã€å¯¹åº”æ•°é‡çš„Playerå’ŒBoardï¼Œå¹¶ä¸”ç¡®å®šæ¯ä¸ªBoardä¸¤è¾¹ç›¸é‚»çš„Boardï¼Œ
+	 * æœ€åè®¾ç½®æ¯ä¸ªBoardçš„ç©å®¶ä¸ºå†…ç½®AI.ï¼ˆè¿˜åŒ…æ‹¬å»ºç«‹ä¸€ä¸ªStringBuilderå¯¹è±¡æ•°ç»„æ¥ç®¡ç†è°ƒè¯•è¾“å‡ºï¼‰
 	 * 
 	 * @param numPlyers
-	 *            the number of players. Íæ¼ÒÊıÁ¿
+	 *            the number of players. ç©å®¶æ•°é‡
 	 */
 	public void startGame(int numPlyers) {
 		this.numPlayers = numPlyers;
@@ -153,10 +182,10 @@ public class GameManager {
 
 	/**
 	 * Gets the card manager.<br>
-	 * »ñÈ¡CardManager
+	 * è·å–CardManager
 	 * 
 	 * @return the reference to the CardManager object.<br>
-	 *         CardManager¶ÔÏóµÄÒıÓÃ
+	 *         CardManagerå¯¹è±¡çš„å¼•ç”¨
 	 */
 	public CardManager getCardManager() {
 		return cardManager;
@@ -164,10 +193,10 @@ public class GameManager {
 
 	/**
 	 * Adds the end-of-turn delayed action.<br>
-	 * Ìí¼Ó»ØºÏ½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * æ·»åŠ å›åˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action. ÑÓÊ±¶¯×÷
+	 *            the delayed action. å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void addEOTDelayedAction(DelayedAction da) {
 		EOTurnDelayedActionList.add(da);
@@ -175,10 +204,10 @@ public class GameManager {
 
 	/**
 	 * Adds the end-of-age delayed action.<br>
-	 * Ìí¼ÓÊ±´ú½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * æ·»åŠ æ—¶ä»£ç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action. ÑÓÊ±¶¯×÷
+	 *            the delayed action. å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void addEOADelayedAction(DelayedAction da) {
 		EOAgeDelayedActionList.add(da);
@@ -186,10 +215,10 @@ public class GameManager {
 
 	/**
 	 * Adds the end-of-game delayed action.<br>
-	 * Ìí¼ÓÓÎÏ·½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * æ·»åŠ æ¸¸æˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action. ÑÓÊ±¶¯×÷
+	 *            the delayed action. å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void addEOGDelayedAction(DelayedAction da) {
 		EOGameDelayedActionList.add(da);
@@ -197,10 +226,10 @@ public class GameManager {
 
 	/**
 	 * Removes the end-of-turn delayed action.<br>
-	 * É¾³ı»ØºÏ½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * åˆ é™¤å›åˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action. ÑÓÊ±¶¯×÷
+	 *            the delayed action. å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void removeEOTDelayedAction(DelayedAction da) {
 		EOTurnRemoveList.add(da);
@@ -208,10 +237,10 @@ public class GameManager {
 
 	/**
 	 * Removes the end-of-age delayed action.<br>
-	 * É¾³ıÊ±´ú½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * åˆ é™¤æ—¶ä»£ç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action.ÑÓÊ±¶¯×÷
+	 *            the delayed action.å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void removeEOADelayedAction(DelayedAction da) {
 		EOAgeDelayedActionList.remove(da);
@@ -219,10 +248,10 @@ public class GameManager {
 
 	/**
 	 * Removes the end-of-game delayed action.<br>
-	 * É¾³ıÓÎÏ·½áÊøÊ±µÄÑÓÊ±¶¯×÷
+	 * åˆ é™¤æ¸¸æˆç»“æŸæ—¶çš„å»¶æ—¶åŠ¨ä½œ
 	 * 
 	 * @param da
-	 *            the delayed action.ÑÓÊ±¶¯×÷
+	 *            the delayed action.å»¶æ—¶åŠ¨ä½œ
 	 */
 	public void removeEOGDelayedAction(DelayedAction da) {
 		EOGameDelayedActionList.remove(da);
@@ -230,11 +259,13 @@ public class GameManager {
 
 	/**
 	 * Start an age.<br>
-	 * ¿ªÊ¼Ò»¸öÊ±´ú
-	 * <p>Get the hand decks for this age<br>
-	 * »ñÈ¡´ËÊ±´úµÄÊÖÅÆ¡£
+	 * å¼€å§‹ä¸€ä¸ªæ—¶ä»£
+	 * <p>
+	 * Get the hand decks for this age<br>
+	 * è·å–æ­¤æ—¶ä»£çš„æ‰‹ç‰Œã€‚
+	 * 
 	 * @param ageNum
-	 *            the age number.Ê±´úĞòºÅ(1/2/3)
+	 *            the age number.æ—¶ä»£åºå·(1/2/3)
 	 */
 	public void startAge(int ageNum) {
 		hands = cardManager.setupHands(ageNum);
@@ -252,11 +283,14 @@ public class GameManager {
 
 	/**
 	 * Start a turn.<br>
-	 * ¿ªÊ¼Ò»¸ö»ØºÏ
-	 * <p>Pass the hand decks(clockwise/counter-clockwise) to the corresponding boards, and ask every board to take its turn one by one.<br>
-	 * (°´Ë³Ê±Õë»òÄæÊ±Õë)½«ÊÖÅÆ´«¸øÏàÓ¦µÄÆæ¼££¬²¢Öğ¸öµØÇëÇóÆæ¼£À´Íê³É¸Ã»ØºÏ¡£ 
+	 * å¼€å§‹ä¸€ä¸ªå›åˆ
+	 * <p>
+	 * Pass the hand decks(clockwise/counter-clockwise) to the corresponding
+	 * boards, and ask every board to take its turn one by one.<br>
+	 * (æŒ‰é¡ºæ—¶é’ˆæˆ–é€†æ—¶é’ˆ)å°†æ‰‹ç‰Œä¼ ç»™ç›¸åº”çš„å¥‡è¿¹ï¼Œå¹¶é€ä¸ªåœ°è¯·æ±‚å¥‡è¿¹æ¥å®Œæˆè¯¥å›åˆã€‚
+	 * 
 	 * @param trnNum
-	 *            the turn number. »ØºÏĞòºÅ
+	 *            the turn number. å›åˆåºå·
 	 */
 	public void startTurn(int trnNum) {
 		int ind = -1;
@@ -266,9 +300,13 @@ public class GameManager {
 			out[ind + 1].append("\nTurn " + trnNum);
 			out[ind + 1].append("\n" + board);
 			System.out.println("\n\n" + board);
-			
-			board.takeTurn(hands[(ind + trnNum) % numPlayers], trnNum);	//Q: What if Age 2 ?
-			
+
+			board.takeTurn(hands[(ind + trnNum) % numPlayers], trnNum); // Q:
+																		// What
+																		// if
+																		// Age 2
+																		// ?
+
 			ind++;
 			// out[ind].append("\n" + board );
 		}
@@ -276,11 +314,13 @@ public class GameManager {
 
 	/**
 	 * Do end of turn.<br>
-	 * »ØºÏ½áÊøÊ±µÄ½áËã
-	 * <p>Add the income of every board into their treasury<br>
-	 * ¸÷·½½«¸Ã»ØºÏµÄÊÕÈë¼ÓÈë¸÷×ÔµÄ½ğ¿âÖĞ
+	 * å›åˆç»“æŸæ—¶çš„ç»“ç®—
+	 * <p>
+	 * Add the income of every board into their treasury<br>
+	 * å„æ–¹å°†è¯¥å›åˆçš„æ”¶å…¥åŠ å…¥å„è‡ªçš„é‡‘åº“ä¸­
+	 * 
 	 * @param trnNum
-	 *            the turn number.»ØºÏĞòºÅ
+	 *            the turn number.å›åˆåºå·
 	 */
 	public void doEndOfTurn(int trnNum) {
 		for (Board board : boards) {
@@ -298,10 +338,10 @@ public class GameManager {
 
 	/**
 	 * Do end of age.<br>
-	 * Ê±´ú½áÊøÊ±µÄ½áËã
+	 * æ—¶ä»£ç»“æŸæ—¶çš„ç»“ç®—
 	 * 
 	 * @param ageNum
-	 *            the age number¡£Ê±´úĞòºÅ
+	 *            the age numberã€‚æ—¶ä»£åºå·
 	 */
 	public void doEndOfAge(int ageNum) {
 		int[] victVP = { 0, 1, 3, 5 };
@@ -337,7 +377,7 @@ public class GameManager {
 
 	/**
 	 * Do end of game.<br>
-	 * ÓÎÏ·½áÊøÊ±µÄ½áËã
+	 * æ¸¸æˆç»“æŸæ—¶çš„ç»“ç®—
 	 */
 	public void doEndOfGame() {
 		for (DelayedAction da : EOGameDelayedActionList) {
@@ -349,10 +389,10 @@ public class GameManager {
 
 	/**
 	 * The main method.<br>
-	 * Ö÷º¯Êı£¬³ÌĞòÈë¿Ú
+	 * ä¸»å‡½æ•°ï¼Œç¨‹åºå…¥å£
 	 * 
 	 * @param args
-	 *            the arguments.ÃüÁîĞĞ²ÎÊıÁĞ±í
+	 *            the arguments.å‘½ä»¤è¡Œå‚æ•°åˆ—è¡¨
 	 */
 	public static void main(String[] args) {
 		GameManager gm = GameManager.getManager();
